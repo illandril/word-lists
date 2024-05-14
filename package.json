@@ -1,6 +1,6 @@
 {
   "name": "@illandril/word-lists",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Various word lists compiled by illandril",
   "type": "module",
   "exports": {
