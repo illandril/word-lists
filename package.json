@@ -1,0 +1,54 @@
+{
+  "name": "@illandril/word-lists",
+  "version": "0.0.1",
+  "description": "Various word lists compiled by illandril",
+  "type": "module",
+  "exports": {
+    "./length-4": "./dist/length-4.json",
+    "./length-5": "./dist/length-5.json",
+    "./length-6": "./dist/length-6.json",
+    "./length-7": "./dist/length-7.json"
+  },
+  "files": [
+    "dist",
+    "LICENSE"
+  ],
+  "scripts": {
+    "clean": "shx rm -rf dist",
+    "build": "run-s clean build:compile",
+    "build:compile": "tsx src/build.ts",
+    "filter-data": "tsx src/raw-data/filter-data.ts",
+    "lint": "biome check .",
+    "lint:fix": "npm run lint -- --apply",
+    "type-check": "tsc --noEmit",
+    "test": "echo No tests yet",
+    "prepublishOnly": "run-s validate build",
+    "preversion": "run-s validate build",
+    "validate": "run-s test type-check lint",
+    "prepare": "husky"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/illandril/word-lists.git"
+  },
+  "author": "Joe Spandrusyszyn",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/illandril/word-lists/issues"
+  },
+  "homepage": "https://github.com/illandril/word-lists",
+  "devDependencies": {
+    "@illandril/biome-config": "^1.1.1",
+    "@types/badwords": "^1.0.3",
+    "@types/naughty-words": "^1.2.3",
+    "@types/node": "^20.12.11",
+    "badwords": "^1.0.0",
+    "commander": "^12.0.0",
+    "husky": "^9.0.11",
+    "naughty-words": "^1.2.0",
+    "npm-run-all2": "^6.1.2",
+    "shx": "^0.3.4",
+    "tsx": "^4.10.2",
+    "typescript": "^5.4.5"
+  }
+}

@@ -1,0 +1,15 @@
+All datasets in this directory originated from the Google Ngram project.
+This data was then filtered and re-formatted...
+- Only ngrams that contain only the letters A-Z (w/o diacritics) were kept
+- Only ngrams of length 4 through 9 were kept
+- All letters were converted to upper-case, and ngrams that were the same except for the case were merged
+- Only data from the years specified years were kept
+- The data was adjusted to the format `NGRAM\tCOUNTS\tCOUNTS\t...`, where `COUNTS` are all converted using `Math.round(Math.log10(value))`
+  - Blank = no records for that year for that ngram
+  - Single number = Both record count and volume count are the same (after conversion)
+  - `#,#` = `match_count,volume_count`
+- The data was compressed using Brotli compression
+- The ngrams were split based on ngram length
+
+https://storage.googleapis.com/books/ngrams/books/datasetsv3.html
+https://creativecommons.org/licenses/by/3.0/
