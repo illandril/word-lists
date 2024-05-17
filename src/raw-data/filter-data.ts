@@ -41,19 +41,26 @@ program
       const words = new Map<string, number>();
       await parseNgram3Log10File(file, async (word, data) => {
         if (shouldExclude(word)) {
-          log('P>', word);
           return;
         }
         if (!(await isInScowl(word))) {
           return;
         }
         if (!(await isDefined(word))) {
-          // log('W>', word);
           return;
         }
         const score = [...data.values()].reduce((acc, curr) => acc + curr.matchCount + curr.volumeCount * 3, 0);
+        if (score < 10_000) {
+          // 10,000 is an fairly arbitrary limit. It excludes rougly...
+          // -  0.3k 4-letter words (out of ~6k)
+          // -  2.5k 5-letter words (out of ~13k)
+          // -  7.9k 6-letter words (out of ~23k)
+          // - 14.0k 7-letter words (out of ~33k)
+          return;
+        }
         words.set(word, score);
         if (words.size % 100 === 0) {
+          log(word, score);
           await saveCache();
         }
       });
