@@ -4,10 +4,14 @@
   "description": "Various word lists compiled by illandril",
   "type": "module",
   "exports": {
-    "./length-4": "./dist/length-4.json",
-    "./length-5": "./dist/length-5.json",
-    "./length-6": "./dist/length-6.json",
-    "./length-7": "./dist/length-7.json"
+    "./length-4": "./dist/length-4.js",
+    "./length-5": "./dist/length-5.js",
+    "./length-6": "./dist/length-6.js",
+    "./length-7": "./dist/length-7.js",
+    "./length-4.json": "./dist/length-4.json",
+    "./length-5.json": "./dist/length-5.json",
+    "./length-6.json": "./dist/length-6.json",
+    "./length-7.json": "./dist/length-7.json"
   },
   "files": [
     "dist",

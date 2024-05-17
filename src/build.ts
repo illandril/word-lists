@@ -13,4 +13,8 @@ for (const file of files) {
     words.push(line);
   }
   fs.writeFileSync(new URL(`length-${file.substring(0, file.indexOf('.'))}.json`, outDir), JSON.stringify(words));
+  fs.writeFileSync(
+    new URL(`length-${file.substring(0, file.indexOf('.'))}.js`, outDir),
+    `export default ${JSON.stringify(words)}`,
+  );
 }
