@@ -12,9 +12,11 @@ for (const file of files) {
   for await (const line of read(new URL(file, input))) {
     words.push(line);
   }
-  fs.writeFileSync(new URL(`length-${file.substring(0, file.indexOf('.'))}.json`, outDir), JSON.stringify(words));
+  const length = file.substring(0, file.indexOf('.'));
+  fs.writeFileSync(new URL(`length-${length}.json`, outDir), JSON.stringify(words));
+  fs.writeFileSync(new URL(`length-${length}.js`, outDir), `export default ${JSON.stringify(words)}`);
   fs.writeFileSync(
-    new URL(`length-${file.substring(0, file.indexOf('.'))}.js`, outDir),
-    `export default ${JSON.stringify(words)}`,
+    new URL(`length-${length}.d.ts`, outDir),
+    `declare const words${length}: readonly string[]; export default words${length};`,
   );
 }
