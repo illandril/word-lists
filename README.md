@@ -1,1 +1,6 @@
-# word-lists
+# @illandril/word-lists
+
+| [![Illandril](https://avatars.githubusercontent.com/illandril?size=64)](https://github.com/illandril) | [![Author](https://img.shields.io/badge/Joe%20Spandrusyszyn-Illandril?style=flat&labelColor=520&color=250&label=Illandril)](https://github.com/illandril) [![License](https://img.shields.io/github/license/illandril/word-lists?style=flat&labelColor=520&color=250&label=license)](https://github.com/illandril/word-lists/blob/main/LICENSE) <br> [![Version](https://img.shields.io/npm/v/%40illandril%2Fword-lists?style=flat&labelColor=520&color=250&label=version)](https://www.npmjs.com/package/@illandril/word-lists) [![Downloads per month](https://img.shields.io/npm/dm/%40illandril%2Fword-lists?style=flat&labelColor=520&color=250&label=downloads)](https://www.npmjs.com/package/@illandril/word-lists) [![Open Issues](https://img.shields.io/github/issues/illandril/word-lists?style=flat&labelColor=520&color=250&logo=github&label=issues)](https://github.com/illandril/word-lists/issues) |
+| --- | :--- |
+
+A collection of word lists (and the tools used to generate them), used by [Word Carpet Party](https://words.spandrusyszyn.com/)

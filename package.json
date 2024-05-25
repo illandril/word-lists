@@ -54,17 +54,17 @@
   },
   "homepage": "https://github.com/illandril/word-lists",
   "devDependencies": {
-    "@illandril/biome-config": "^1.1.1",
+    "@illandril/biome-config": "^1.2.0",
     "@types/badwords": "^1.0.3",
     "@types/naughty-words": "^1.2.3",
-    "@types/node": "^20.12.11",
+    "@types/node": "^20.12.12",
     "badwords": "^1.0.0",
-    "commander": "^12.0.0",
+    "commander": "^12.1.0",
     "husky": "^9.0.11",
     "naughty-words": "^1.2.0",
-    "npm-run-all2": "^6.1.2",
+    "npm-run-all2": "^6.2.0",
     "shx": "^0.3.4",
-    "tsx": "^4.10.2",
+    "tsx": "^4.11.0",
     "typescript": "^5.4.5"
   }
 }
