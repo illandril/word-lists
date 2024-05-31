@@ -23,7 +23,12 @@
       "default": "./dist/length-7.js",
       "types": "./dist/length-7.d.ts"
     },
-    "./length-7.json": "./dist/length-7.json"
+    "./length-7.json": "./dist/length-7.json",
+    "./length-8": {
+      "default": "./dist/length-8.js",
+      "types": "./dist/length-8.d.ts"
+    },
+    "./length-8.json": "./dist/length-8.json"
   },
   "files": [
     "dist",
@@ -37,7 +42,9 @@
     "lint": "biome check .",
     "lint:fix": "npm run lint -- --apply",
     "type-check": "tsc --noEmit",
-    "test": "echo No tests yet",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
     "prepublishOnly": "run-s validate build",
     "preversion": "run-s validate build",
     "validate": "run-s test type-check lint",
@@ -58,6 +65,7 @@
     "@types/badwords": "^1.0.3",
     "@types/naughty-words": "^1.2.3",
     "@types/node": "^20.12.12",
+    "@types/xml-flow": "^1.0.4",
     "badwords": "^1.0.0",
     "commander": "^12.1.0",
     "husky": "^9.0.11",
@@ -65,6 +73,9 @@
     "npm-run-all2": "^6.2.0",
     "shx": "^0.3.4",
     "tsx": "^4.11.0",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "vitest": "^1.6.0",
+    "xml-flow": "^1.0.4",
+    "zod": "^3.23.8"
   }
 }

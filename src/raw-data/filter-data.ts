@@ -1,5 +1,5 @@
 import fs from 'node:fs';
-import { join } from 'node:path';
+import path, { join } from 'node:path';
 import readline from 'node:readline';
 import { program } from 'commander';
 import isInScowl from './SCOWL/isInScowl';
@@ -7,10 +7,66 @@ import { type YearlyNgramUsageData, parseNgram3File, parseNgram3Log10File } from
 import normalize from './normalize';
 import normalizeAllowedOnly from './normalize-allowed-only';
 import { shouldExclude } from './profanity';
-import { isDefined, saveCache } from './wiktionary';
+import extractTags from './wiktionary/extractTags';
+import { isDefined, saveCache } from './wiktionary/wiktionary';
 
 const log = console.log;
 const error = console.error;
+
+program
+  .command('extract-wiktionary-tags')
+  .description('Extract tags from the english definitions from raw wiktionary export xml')
+  .argument('<input>', 'Path to raw Wiktionary XML')
+  .argument('<output>', 'Path to the output directory')
+  .action(async (input, outputPath) => {
+    if (!fs.lstatSync(input).isFile()) {
+      program.error(`Could not read ${input} - not a file`);
+    }
+    if (fs.existsSync(outputPath) && fs.readdirSync(outputPath).length) {
+      program.error('Output directory already exists');
+    }
+    fs.mkdirSync(outputPath, { recursive: true });
+    const tagEmitter = extractTags(input, ({ title }) => /^[a-z]{2,10}$/.test(title));
+
+    let count = 0;
+    tagEmitter.on('page', (page) => {
+      fs.appendFileSync(
+        path.join(outputPath, `wiktionary-tags-${page.title.length}.ts`),
+        `${JSON.stringify(page)},\n`,
+        {
+          encoding: 'utf8',
+        },
+      );
+      count++;
+      if (count % 1000 === 0) {
+        log(count, page.title);
+      }
+    });
+
+    await new Promise<void>((resolve) => {
+      tagEmitter.on('end', () => {
+        for (const fileName of fs.readdirSync(outputPath)) {
+          const filePath = path.join(outputPath, fileName);
+          const data = fs.readFileSync(filePath, { encoding: 'utf-8' });
+
+          const values = JSON.parse(`[\n${data.substring(0, data.length - 2)}\n]`);
+          const map = new Map<string, string[][]>();
+          for (const entry of values) {
+            map.set(entry.title, [...(map.get(entry.title) ?? []), ...entry.tags]);
+          }
+
+          fs.writeFileSync(
+            filePath,
+            `export default ${JSON.stringify(
+              Object.fromEntries([...map.entries()].sort((a, b) => a[0].localeCompare(b[0]))),
+            )}`,
+            { encoding: 'utf-8' },
+          );
+        }
+        resolve();
+      });
+    });
+  });
 
 program
   .command('ngram3-log10')
@@ -39,6 +95,7 @@ program
       }
 
       const words = new Map<string, number>();
+      // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: Acceptable complexity
       await parseNgram3Log10File(file, async (word, data) => {
         if (shouldExclude(word)) {
           return;
@@ -49,13 +106,21 @@ program
         if (!(await isDefined(word))) {
           return;
         }
-        const score = [...data.values()].reduce((acc, curr) => acc + curr.matchCount + curr.volumeCount * 3, 0);
-        if (score < 10_000) {
-          // 10,000 is an fairly arbitrary limit. It excludes rougly...
-          // -  0.3k 4-letter words (out of ~6k)
-          // -  2.5k 5-letter words (out of ~13k)
-          // -  7.9k 6-letter words (out of ~23k)
-          // - 14.0k 7-letter words (out of ~33k)
+        const score = [...data.values()].reduce((acc, curr) => acc + curr.matchCount + curr.volumeCount * 5, 0);
+        // Score barriers are fairly arbitrary
+        if (word.length === 4 && score < 200_000) {
+          return;
+        }
+        if (word.length === 5 && score < 100_000) {
+          return;
+        }
+        if (word.length === 6 && score < 30_000) {
+          return;
+        }
+        if (word.length === 7 && score < 10_000) {
+          return;
+        }
+        if (word.length === 8 && score < 2_500) {
           return;
         }
         words.set(word, score);
@@ -67,7 +132,7 @@ program
 
       const byScore = [...words.entries()]
         .sort(([_wordA, scoreA], [_wordB, scoreB]) => scoreB - scoreA)
-        .map(([word]) => word);
+        .map(([word]) => `${word}`);
       fs.writeFileSync(join(outputPath, fileName.replace('.br', '.txt')), byScore.join('\n'), {
         encoding: 'ascii',
       });

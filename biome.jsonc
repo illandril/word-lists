@@ -2,6 +2,6 @@
   "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
   "extends": ["@illandril/biome-config"],
   "files": {
-    "ignore": ["src/raw-data/**/*.json"]
+    "ignore": ["src/raw-data/**/*.json", "src/raw-data/wiktionary/tags/wiktionary-tags-*.ts"]
   }
 }
