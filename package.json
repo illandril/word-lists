@@ -64,7 +64,7 @@
     "@illandril/biome-config": "^1.2.0",
     "@types/badwords": "^1.0.3",
     "@types/naughty-words": "^1.2.3",
-    "@types/node": "^20.12.12",
+    "@types/node": "^22.4.1",
     "@types/xml-flow": "^1.0.4",
     "badwords": "^1.0.0",
     "commander": "^12.1.0",
